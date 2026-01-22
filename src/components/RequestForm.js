@@ -52,6 +52,20 @@ export default function RequestForm({ onSubmit, loading }) {
             ))}
           </select>
         </div>
+        <div className="form-group">
+          <label htmlFor="description" className="form-label">
+            Description (Optional)
+          </label>
+          <textarea
+            id="description"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+            className="form-textarea"
+            disabled={loading}
+            rows={4}
+            placeholder="Add any additional details about your request..."
+          />
+        </div>
         <button
           type="submit"
           className="submit-btn"

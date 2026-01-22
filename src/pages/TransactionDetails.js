@@ -109,16 +109,6 @@ export default function TransactionDetails() {
     }
   };
 
-  const copyToClipboard = async (text, type) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      alert(`${type} copied to clipboard!`);
-    } catch (err) {
-      console.error("Failed to copy:", err);
-      alert("Failed to copy to clipboard");
-    }
-  };
-
   if (loading) {
     return (
       <div className="tx-details-page">
@@ -149,8 +139,6 @@ export default function TransactionDetails() {
       </div>
     );
   }
-
-  const statusInfo = getStatusDisplay(details.status);
 
   // Source transaction card badge
   const sourceStatusBadge = (
