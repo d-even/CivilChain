@@ -1,0 +1,223 @@
+.tx-details-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  color: white;
+}
+
+.tx-details-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.tx-header {
+  margin-bottom: 2rem;
+}
+
+.tx-header h1 {
+  font-size: 2rem;
+  margin: 1.5rem 0;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.back-button {
+  background: linear-gradient(135deg, #2a2a2a 0%, #333333 100%);
+  border: 1px solid #404040;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.back-button:hover {
+  background: linear-gradient(135deg, #333333 0%, #3a3a3a 100%);
+  transform: translateX(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Token Cards Layout */
+.token-cards-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.token-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.token-icon {
+  font-size: 1rem;
+}
+
+.transaction-detail-value-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.external-link-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 4px 8px;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.external-link-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Summary Table Section */
+.summary-table-section {
+  margin-top: 2rem;
+}
+
+.section-title {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.summary-table-container {
+  background: linear-gradient(135deg, #1a1a1a 0%, #242424 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #333333;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.summary-table thead {
+  background: linear-gradient(135deg, #2a2a2a 0%, #333333 100%);
+}
+
+.summary-table th {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #404040;
+}
+
+.summary-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s ease;
+}
+
+.summary-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.summary-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.summary-table td {
+  padding: 1rem 1.5rem;
+  color: #e5e7eb;
+  font-size: 0.95rem;
+}
+
+.summary-table td:first-child {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  width: 250px;
+}
+
+.tx-link {
+  color: #60a5fa;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  word-break: break-all;
+  font-family: 'Courier New', monospace;
+}
+
+.tx-link:hover {
+  color: #93bbfd;
+  text-decoration: underline;
+}
+
+.loading-state,
+.error-state {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid #60a5fa;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-state h2 {
+  margin-bottom: 1.5rem;
+  color: #fb923c;
+}
+
+@media (max-width: 1024px) {
+  .token-cards-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .tx-details-container {
+    padding: 1rem;
+  }
+
+  .tx-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .summary-table td,
+  .summary-table th {
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .summary-table td:first-child {
+    width: auto;
+  }
+}

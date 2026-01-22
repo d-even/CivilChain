@@ -1,0 +1,93 @@
+.transaction-card {
+  background: linear-gradient(135deg, #1a1a1a 0%, #242424 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #333333;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.transaction-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+}
+
+.transaction-header {
+  background: linear-gradient(135deg, #2a2a2a 0%, #333333 100%);
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #404040;
+}
+
+.transaction-label {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #ffffff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.transaction-details {
+  padding: 1.5rem;
+}
+
+.transaction-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.transaction-detail-row:last-child {
+  border-bottom: none;
+}
+
+.transaction-detail-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  min-width: 140px;
+}
+
+.transaction-detail-value {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.95);
+  word-break: break-all;
+  text-align: right;
+  flex: 1;
+  font-family: 'Courier New', monospace;
+}
+
+.transaction-detail-value-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .transaction-detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .transaction-detail-label {
+    min-width: auto;
+  }
+
+  .transaction-detail-value {
+    text-align: left;
+  }
+
+  .transaction-detail-value-wrapper {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

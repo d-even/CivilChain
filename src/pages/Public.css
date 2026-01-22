@@ -1,0 +1,357 @@
+.public-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+}
+
+.public-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.records-section {
+  background: linear-gradient(135deg, #1a1a1a 0%, #242424 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  border: 1px solid #333333;
+  font-color: #e5e7eb;
+}
+
+.section-header {
+  background: linear-gradient(135deg, #2a2a2a 0%, #333333 100%);
+  padding: 1.2rem 1.5rem;
+  border-bottom: 2px solid #404040;
+}
+
+.section-title {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin: 0;
+  text-transform: uppercase;
+  font-color: #e5e7eb;
+}
+
+.search-controls {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #1a1a1a 0%, #242424 100%);
+  border-bottom: 1px solid #333333;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-bar {
+  position: relative;
+  flex: 1;
+  min-width: 300px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  background: #0a0a0a;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+.search-input::placeholder {
+  color: #6b7280;
+}
+
+.clear-search {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+
+.clear-search:hover {
+  color: #ffffff;
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #404040;
+  transition: 0.3s;
+  border-radius: 28px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #ffffff;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: #60a5fa;
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(24px);
+}
+
+.toggle-label {
+  color: #e5e7eb;
+  font-weight: 500;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+
+.error-banner {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  font-weight: 500;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.loading-state,
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #d1d5db;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.records-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.records-table thead {
+  background: linear-gradient(135deg, #2a2a2a 0%, #333333 100%);
+  border-bottom: 2px solid #404040;
+}
+
+.records-table th {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 0.95rem;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+}
+
+.records-table tbody tr {
+  border-bottom: 1px solid #333333;
+  transition: background-color 0.2s;
+}
+
+.records-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.row-even {
+  background: rgba(30, 30, 30, 0.6);
+}
+
+.row-odd {
+  background: rgba(20, 20, 20, 0.6);
+}
+
+.records-table td {
+  padding: 1.2rem 1.5rem;
+  color: #e5e7eb;
+}
+
+.cell-id {
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.cell-address {
+  font-family: 'Courier New', monospace;
+  color: #d1d5db;
+  cursor: help;
+}
+
+.cell-hash {
+  font-family: 'Courier New', monospace;
+  color: #93c5fd;
+  cursor: help;
+  font-weight: 500;
+}
+
+.cell-time {
+  color: #d1d5db;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.cell-service {
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.cell-status {
+  text-align: center;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid;
+}
+
+.status-icon {
+  font-size: 1rem;
+}
+
+.status-text {
+  white-space: nowrap;
+}
+
+.status-completed {
+  background: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.status-progress {
+  background: rgba(251, 146, 60, 0.2);
+  color: #fdba74;
+  border-color: rgba(251, 146, 60, 0.4);
+}
+
+.status-review {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.status-unknown {
+  background: rgba(107, 114, 128, 0.2);
+  color: #d1d5db;
+  border-color: rgba(107, 114, 128, 0.4);
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .public-container {
+    padding: 1rem;
+  }
+
+  .records-table {
+    font-size: 0.85rem;
+  }
+
+  .records-table th,
+  .records-table td {
+    padding: 0.75rem 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .records-table {
+    font-size: 0.8rem;
+  }
+
+  .records-table th,
+  .records-table td {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .status-badge {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .section-title {
+    font-size: 0.9rem;
+  }
+}
+
+/* Make table scrollable on small screens */
+@media (max-width: 640px) {
+  .table-container {
+    margin: 0 -1rem;
+  }
+
+  .records-table th:first-child,
+  .records-table td:first-child {
+    padding-left: 1rem;
+  }
+
+  .records-table th:last-child,
+  .records-table td:last-child {
+    padding-right: 1rem;
+  }
+}
+
