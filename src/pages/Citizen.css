@@ -1,0 +1,224 @@
+.page-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+}
+
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+  color: #d1d5db;
+  font-size: 1.1rem;
+}
+
+.connect-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+}
+
+.connect-card {
+  background: linear-gradient(135deg, #1a1a1a 0%, #242424 100%);
+  padding: 3rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  max-width: 500px;
+  border: 1px solid #333333;
+}
+
+.connect-card h2 {
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.connect-card p {
+  color: #d1d5db;
+  margin-bottom: 2rem;
+}
+
+.error-message {
+  color: #e53e3e;
+  background: #fff5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.connect-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.connect-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.citizen-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.wallet-info {
+  background: linear-gradient(135deg, #2a2a2a 0%, #333333 100%);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  border: 1px solid #404040;
+}
+
+.wallet-label {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.wallet-address {
+  font-family: monospace;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+.my-requests-section {
+  background: linear-gradient(135deg, #1a1a1a 0%, #242424 100%);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  border: 1px solid #333333;
+}
+
+.section-title {
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.no-requests {
+  text-align: center;
+  color: #d1d5db;
+  padding: 3rem;
+  font-size: 1.1rem;
+}
+
+.requests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.request-card {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: all 0.3s;
+}
+
+.request-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border-color: #667eea;
+}
+
+.request-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.request-id {
+  font-weight: 700;
+  color: #667eea;
+  font-size: 1.1rem;
+}
+
+.status-badge {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-approved {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.request-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.service-type {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.request-time {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    padding: 1rem;
+  }
+
+  .page-title {
+    font-size: 2rem;
+  }
+
+  .connect-card {
+    padding: 2rem;
+  }
+
+  .requests-grid {
+    grid-template-columns: 1fr;
+  }
+}
