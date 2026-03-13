@@ -9,7 +9,7 @@ import CopyButton from "../components/CopyButton";
 import { formatTime } from "../utils/formatters";
 import "./TransactionDetails.css";
 
-const CONTRACT_ADDRESS = "0x0C179c4Ef979364b28F4A9d6531a00FD3aAEFb03";
+const CONTRACT_ADDRESS = "0xe8C91E7AD5d6a6E05FcceD98A611fa72425498fE";
 
 export default function TransactionDetails() {
   const { txHash } = useParams();

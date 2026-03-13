@@ -12,6 +12,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Public />} />
           <Route path="/citizen" element={<Citizen />} />
+          <Route path="/admin" element={<Gov />} />
           <Route path="/gov" element={<Gov />} />
           <Route path="/:txHash" element={<TransactionDetails />} />
         </Routes>

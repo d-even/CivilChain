@@ -5,7 +5,7 @@ import ABI from "../abi/TransparentService.json";
 import Navbar from "../components/Navbar";
 import "./Public.css";
 
-const CONTRACT_ADDRESS = "0x0C179c4Ef979364b28F4A9d6531a00FD3aAEFb03";
+const CONTRACT_ADDRESS = "0xe8C91E7AD5d6a6E05FcceD98A611fa72425498fE";
 
 export default function Public() {
   const navigate = useNavigate();
@@ -33,37 +33,46 @@ export default function Public() {
         const code = await provider.getCode(CONTRACT_ADDRESS);
         if (!code || code === "0x") {
           setError("No contract found at this address. Please ensure you're connected to the correct blockchain network in MetaMask.");
-          setLoading(false);
-          return;
+          // No contract on this network — show empty list but continue to check wallet
+          setRequests([]);
+        } else {
+          const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, provider);
+          const data = await contract.getAllRequests();
+
+          // Fetch transaction hashes from RequestCreated events with a bounded block range
+          const txHashMap = {};
+          try {
+            const filter = contract.filters.RequestCreated();
+            const currentBlock = await provider.getBlockNumber();
+            const MAX_BLOCK_RANGE = 50000;
+            const fromBlock = currentBlock > MAX_BLOCK_RANGE ? currentBlock - MAX_BLOCK_RANGE : 0;
+            const events = await contract.queryFilter(filter, fromBlock, currentBlock);
+
+            events.forEach(event => {
+              const requestId = Number(event.args.id);
+              txHashMap[requestId] = event.transactionHash;
+            });
+          } catch (eventErr) {
+            console.warn("Failed to load RequestCreated events (tx hashes will be missing):", eventErr);
+          }
+
+          // Add transaction hashes and document fields to requests
+          const requestsWithTxHash = data.map(req => ({
+            id: req.id,
+            citizen: req.citizen,
+            serviceType: req.serviceType,
+            status: req.status,
+            timestamp: req.timestamp,
+            userDoc: req.userDoc || "",
+            adminDoc: req.adminDoc || "",
+            verifiedTimestamp: req.verifiedTimestamp || 0,
+            transactionHash: txHashMap[Number(req.id)] || null
+          }));
+
+          setRequests(requestsWithTxHash);
+          setError(""); // Clear any previous errors
         }
 
-        const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, provider);
-        const data = await contract.getAllRequests();
-        
-        // Fetch transaction hashes from RequestCreated events
-        const filter = contract.filters.RequestCreated();
-        const events = await contract.queryFilter(filter);
-        
-        // Create a map of request ID to transaction hash
-        const txHashMap = {};
-        events.forEach(event => {
-          const requestId = Number(event.args.id);
-          txHashMap[requestId] = event.transactionHash;
-        });
-        
-        // Add transaction hashes to requests - properly extract fields
-        const requestsWithTxHash = data.map(req => ({
-          id: req.id,
-          citizen: req.citizen,
-          serviceType: req.serviceType,
-          status: req.status,
-          timestamp: req.timestamp,
-          transactionHash: txHashMap[Number(req.id)] || null
-        }));
-        
-        setRequests(requestsWithTxHash);
-        setError(""); // Clear any previous errors
-        
         // Check if wallet is already connected (without prompting)
         try {
           const accounts = await provider.send("eth_accounts", []);
@@ -89,9 +98,11 @@ export default function Public() {
       case 0:
         return { text: "Under review", icon: "🔵", class: "status-review" };
       case 1:
-        return { text: "Completed", icon: "✅", class: "status-completed" };
+        return { text: "In progress", icon: "⏳", class: "status-review" };
       case 2:
-        return { text: "Rejected", icon: "🔶", class: "status-unknown"}
+        return { text: "Verified", icon: "✅", class: "status-completed" };
+      case 3:
+        return { text: "Completed", icon: "📄", class: "status-completed" };
       default:
         return { text: "Unknown", icon: "❓", class: "status-unknown" };
     }

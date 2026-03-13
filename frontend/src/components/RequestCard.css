@@ -65,6 +65,12 @@
   border-color: rgba(16, 185, 129, 0.3);
 }
 
+.status-inprogress {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
 .status-rejected {
   background: rgba(239, 68, 68, 0.15);
   color: #ef4444;
@@ -316,4 +322,66 @@
   .card-actions {
     grid-template-columns: 1fr;
   }
+}
+
+/* IPFS Document Link Styles */
+.doc-link-container {
+  margin-top: 0.25rem;
+}
+
+.ipfs-doc-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.ipfs-doc-link:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
+  border-color: rgba(102, 126, 234, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.ipfs-doc-link.admin-doc {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.ipfs-doc-link.admin-doc:hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.25) 100%);
+  border-color: rgba(16, 185, 129, 0.5);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.doc-icon {
+  font-size: 1.1rem;
+}
+
+.doc-hash {
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #d1d5db;
+}
+
+.view-link {
+  font-size: 0.8rem;
+  color: #a0aeff;
+  font-weight: 500;
+}
+
+.ipfs-doc-link.admin-doc .view-link {
+  color: #6ee7b7;
+}
+
+.doc-thumb {
+  max-width: 120px;
+  max-height: 80px;
+  border-radius: 6px;
+  border: 1px solid #404040;
 }

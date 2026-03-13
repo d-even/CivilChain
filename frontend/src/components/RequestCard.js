@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getIpfsUrl, isIpfsHash } from "../utils/fileverse";
 import "./RequestCard.css";
 
 export default function RequestCard({ request, onApprove, onReject, loading, showActions = false }) {
@@ -9,8 +10,9 @@ export default function RequestCard({ request, onApprove, onReject, loading, sho
     const statusNum = Number(status);
     const statuses = {
       0: { text: "PENDING", class: "status-pending", icon: "⏳" },
-      1: { text: "APPROVED", class: "status-approved", icon: "✅" },
-      2: { text: "REJECTED", class: "status-rejected", icon: "❌" }
+      1: { text: "IN PROGRESS", class: "status-inprogress", icon: "🔄" },
+      2: { text: "VERIFIED", class: "status-approved", icon: "✅" },
+      3: { text: "REJECTED", class: "status-rejected", icon: "❌" }
     };
     return statuses[statusNum] || statuses[0];
   };
@@ -81,9 +83,51 @@ export default function RequestCard({ request, onApprove, onReject, loading, sho
             <span className="info-label">Submitted:</span>
             <span className="info-value">{formatTime(request.timestamp)}</span>
           </div>
+          {request.userDoc && (
+            <div className="info-item">
+              <span className="info-label">User Document:</span>
+              <div className="info-value doc-link-container">
+                {isIpfsHash(request.userDoc) ? (
+                  <a 
+                    href={getIpfsUrl(request.userDoc)} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="ipfs-doc-link"
+                  >
+                    <span className="doc-icon">📄</span>
+                    <span className="doc-hash">{request.userDoc.slice(0, 8)}...{request.userDoc.slice(-6)}</span>
+                    <span className="view-link">View on IPFS ↗</span>
+                  </a>
+                ) : (
+                  <img src={request.userDoc} alt="user-doc" className="doc-thumb" />
+                )}
+              </div>
+            </div>
+          )}
+          {request.adminDoc && (
+            <div className="info-item">
+              <span className="info-label">Gov Document:</span>
+              <div className="info-value doc-link-container">
+                {isIpfsHash(request.adminDoc) ? (
+                  <a 
+                    href={getIpfsUrl(request.adminDoc)} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="ipfs-doc-link admin-doc"
+                  >
+                    <span className="doc-icon">🏛️</span>
+                    <span className="doc-hash">{request.adminDoc.slice(0, 8)}...{request.adminDoc.slice(-6)}</span>
+                    <span className="view-link">View on IPFS ↗</span>
+                  </a>
+                ) : (
+                  <a href={request.adminDoc} target="_blank" rel="noreferrer">View Document</a>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
-        {!showActions && request.rejectionReason && Number(request.status) === 2 && (
+        {!showActions && request.rejectionReason && Number(request.status) === 3 && (
           <div className="rejection-reason-display">
             <label className="rejection-reason-label">Rejection Reason:</label>
             <p className="rejection-reason-text">{request.rejectionReason}</p>
