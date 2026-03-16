@@ -3,13 +3,15 @@ import { Web3Context } from "../context/Web3Context";
 import Navbar from "../components/Navbar";
 import RequestForm from "../components/RequestForm";
 import RequestCard from "../components/RequestCard";
+import EnsBadge from "../components/EnsBadge";
 
 import "./Citizen.css";
 
 export default function Citizen() {
-  const { connectWallet, ensureConnected, account, contract, error } = useContext(Web3Context);
+  const { connectWallet, ensureConnected, account, contract, error, resolveEnsName } = useContext(Web3Context);
   const [loading, setLoading] = useState(false);
   const [myRequests, setMyRequests] = useState([]);
+  const [accountEns, setAccountEns] = useState(null);
 
   const loadMyRequests = useCallback(async () => {
     try {
@@ -36,6 +38,36 @@ export default function Citizen() {
       loadMyRequests();
     }
   }, [contract, account, loadMyRequests]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadEns = async () => {
+      if (!account || !resolveEnsName) {
+        if (mounted) setAccountEns(null);
+        return;
+      }
+
+      const ens = await resolveEnsName(account);
+      if (mounted) setAccountEns(ens);
+    };
+
+    loadEns();
+
+    const handleEnsUpdate = (event) => {
+      const mappedAddress = event?.detail?.address;
+      if (!account || !mappedAddress) return;
+      if (mappedAddress.toLowerCase() !== account.toLowerCase()) return;
+      loadEns();
+    };
+
+    window.addEventListener("ens-mapping-updated", handleEnsUpdate);
+
+    return () => {
+      mounted = false;
+      window.removeEventListener("ens-mapping-updated", handleEnsUpdate);
+    };
+  }, [account, resolveEnsName]);
 
   const handleSubmit = async (serviceType, userDoc) => {
     try {
@@ -81,7 +113,7 @@ export default function Citizen() {
           <div className="citizen-content">
             <div className="wallet-info">
               <span className="wallet-label">Connected Wallet:</span>
-              <span className="wallet-address">{account}</span>
+              <EnsBadge ensName={accountEns} title={account} className="wallet-address" />
             </div>
 
             {error && <p className="error-message">{error}</p>}

@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getIpfsUrl, isIpfsHash } from "../utils/fileverse";
+import { Web3Context } from "../context/Web3Context";
+import { displayEns } from "../utils/ens";
 import "./RequestCard.css";
 
 export default function RequestCard({ request, onApprove, onReject, loading, showActions = false }) {
+  const { resolveEnsName } = useContext(Web3Context);
   const [showRejectForm, setShowRejectForm] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
+  const [citizenEns, setCitizenEns] = useState(null);
 
   const getStatusInfo = (status) => {
     const statusNum = Number(status);
@@ -25,10 +29,27 @@ export default function RequestCard({ request, onApprove, onReject, loading, sho
     });
   };
 
-  const truncateAddress = (address) => {
-    if (!address) return "";
-    return `${address.substring(0, 8)}...${address.substring(address.length - 6)}`;
-  };
+  useEffect(() => {
+    let mounted = true;
+
+    const loadEns = async () => {
+      if (!request?.citizen || !resolveEnsName) {
+        if (mounted) setCitizenEns(null);
+        return;
+      }
+
+      const ens = await resolveEnsName(request.citizen);
+      if (mounted) {
+        setCitizenEns(ens);
+      }
+    };
+
+    loadEns();
+
+    return () => {
+      mounted = false;
+    };
+  }, [request?.citizen, resolveEnsName]);
 
   const statusInfo = getStatusInfo(request.status);
   const isPending = Number(request.status) === 0;
@@ -69,7 +90,9 @@ export default function RequestCard({ request, onApprove, onReject, loading, sho
         <div className="card-info-grid">
           <div className="info-item">
             <span className="info-label">Citizen:</span>
-            <span className="info-value">{truncateAddress(request.citizen)}</span>
+            <span className="info-value" title={request.citizen}>
+              {displayEns(citizenEns)}
+            </span>
           </div>
           <div className="info-item">
             <span className="info-label">Service:</span>

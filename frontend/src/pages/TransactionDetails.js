@@ -7,6 +7,7 @@ import TransactionCard from "../components/TransactionCard";
 import StatusBadge from "../components/StatusBadge";
 import CopyButton from "../components/CopyButton";
 import { formatTime } from "../utils/formatters";
+import { displayEns } from "../utils/ens";
 import "./TransactionDetails.css";
 
 const CONTRACT_ADDRESS = "0xe8C91E7AD5d6a6E05FcceD98A611fa72425498fE";
@@ -17,6 +18,7 @@ export default function TransactionDetails() {
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [citizenEns, setCitizenEns] = useState(null);
 
   useEffect(() => {
     const loadTransactionDetails = async () => {
@@ -72,6 +74,14 @@ export default function TransactionDetails() {
         // Get current request data for status
         const allRequests = await contract.getAllRequests();
         const currentRequest = allRequests.find(req => Number(req.id) === requestId);
+
+        let ensName = null;
+        try {
+          ensName = await provider.lookupAddress(citizenAddress);
+        } catch (lookupError) {
+          ensName = null;
+        }
+        setCitizenEns(ensName || null);
         
         setDetails({
           requestId,
@@ -179,7 +189,9 @@ export default function TransactionDetails() {
       label: "SENDER ADDRESS",
       render: () => (
         <div className="transaction-detail-value-wrapper">
-          <span className="transaction-detail-value">{details.citizenAddress}</span>
+          <span className="transaction-detail-value" title={details.citizenAddress}>
+            {displayEns(citizenEns)}
+          </span>
           <CopyButton text={details.citizenAddress} label="Citizen Address" />
         </div>
       )
@@ -254,7 +266,9 @@ export default function TransactionDetails() {
                   <td>Citizen Address</td>
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span>{details.citizenAddress}</span>
+                      <span title={details.citizenAddress}>
+                        {displayEns(citizenEns)}
+                      </span>
                       <CopyButton text={details.citizenAddress} label="Citizen Address" />
                     </div>
                   </td>

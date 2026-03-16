@@ -1,20 +1,28 @@
 import { createContext, useState } from "react";
 import { ethers } from "ethers";
 import ABI from "../abi/TransparentService.json";
+import { lookupEnsName, resolveAddressOrEns, autoResolveEnsForAddress } from "../utils/ens";
 
 export const Web3Context = createContext();
 
 const CONTRACT_ADDRESS = "0xe8C91E7AD5d6a6E05FcceD98A611fa72425498fE";
-const MAIN_ADMIN_ADDRESS = "0x30e77463369433E6D3d33873C1CCD965ca308440"; // deployer = main admin
+const MAIN_ADMIN_INPUT =
+  process.env.REACT_APP_MAIN_ADMIN ||
+  "0x30e77463369433E6D3d33873C1CCD965ca308440";
 
 export const Web3Provider = ({ children }) => {
   const [account, setAccount] = useState(null);
   const [contract, setContract] = useState(null);
   const [error, setError] = useState("");
   const [network, setNetwork] = useState(null);
-  const [officerAddress, setOfficerAddress] = useState(MAIN_ADMIN_ADDRESS);
+  const [officerAddress, setOfficerAddress] = useState(MAIN_ADMIN_INPUT);
   const [officerVerified, setOfficerVerified] = useState(false);
   const [mainAdmin, setMainAdmin] = useState(null);
+  const [web3Provider, setWeb3Provider] = useState(null);
+
+  const resolveEnsName = async (address) => {
+    return lookupEnsName(web3Provider, address);
+  };
 
   const connectWallet = async () => {
     try {
@@ -27,6 +35,7 @@ export const Web3Provider = ({ children }) => {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
 
       const provider = new ethers.BrowserProvider(window.ethereum);
+      setWeb3Provider(provider);
       const net = await provider.getNetwork();
       setNetwork({ chainId: Number(net.chainId), name: net.name });
 
@@ -50,7 +59,8 @@ export const Web3Provider = ({ children }) => {
               const ma = await contractInstance.mainAdmin();
               setMainAdmin(ma);
             } catch (maErr) {
-              // ignore if not available
+              const fallbackAdmin = await resolveAddressOrEns(provider, MAIN_ADMIN_INPUT);
+              setMainAdmin(fallbackAdmin);
             }
 
             // Check whether connected address is a verified officer
@@ -67,8 +77,16 @@ export const Web3Provider = ({ children }) => {
         console.warn("getCode failed:", e);
       }
 
+      // Auto-detect ENS name via forward resolution (works without Primary Name set).
+      await autoResolveEnsForAddress(addr);
+
       setAccount(addr);
       setContract(contractInstance);
+
+      if (!mainAdmin) {
+        const fallbackAdmin = await resolveAddressOrEns(provider, MAIN_ADMIN_INPUT);
+        setMainAdmin(fallbackAdmin);
+      }
       return contractInstance;
     } catch (err) {
       console.error("connectWallet error:", err);
@@ -89,6 +107,7 @@ export const Web3Provider = ({ children }) => {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
 
       const provider = new ethers.BrowserProvider(window.ethereum);
+      setWeb3Provider(provider);
       const signer = await provider.getSigner();
       const addr = await signer.getAddress();
 
@@ -112,6 +131,7 @@ export const Web3Provider = ({ children }) => {
     <Web3Context.Provider value={{
       connectWallet,
       ensureConnected,
+      resolveEnsName,
       account,
       contract,
       OFFICER_ADDRESS: officerAddress,

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"const p = require\\(''./node_modules/wagmi/package.json''\\); console.log\\(''wagmi:'', p.version\\)\")",
+      "Bash(node -e \"const p = require\\(''./node_modules/@rainbow-me/rainbowkit/package.json''\\); console.log\\(''rainbowkit:'', p.version\\)\")",
+      "Bash(node -e \"const p = require\\(''./node_modules/@rainbow-me/rainbowkit/package.json''\\); console.log\\(''peerDeps:'', JSON.stringify\\(p.peerDependencies, null, 2\\)\\)\")"
+    ]
+  }
+}

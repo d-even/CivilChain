@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ethers } from "ethers";
 import ABI from "../abi/TransparentService.json";
 import Navbar from "../components/Navbar";
+import { displayEns } from "../utils/ens";
 import "./Public.css";
 
 const CONTRACT_ADDRESS = "0xe8C91E7AD5d6a6E05FcceD98A611fa72425498fE";
@@ -15,6 +16,7 @@ export default function Public() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showOnlyMine, setShowOnlyMine] = useState(false);
   const [connectedAccount, setConnectedAccount] = useState("");
+  const [ensMap, setEnsMap] = useState({});
 
   useEffect(() => {
     const load = async () => {
@@ -121,10 +123,43 @@ export default function Public() {
     });
   };
 
-  const truncateAddress = (address) => {
-    if (!address) return "";
-    return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
-  };
+  useEffect(() => {
+    const loadEnsNames = async () => {
+      if (!window.ethereum || requests.length === 0) {
+        setEnsMap({});
+        return;
+      }
+
+      try {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const uniqueAddresses = [
+          ...new Set(
+            requests
+              .map((r) => r.citizen)
+              .filter((value) => value && ethers.isAddress(value))
+              .map((value) => value.toLowerCase())
+          )
+        ];
+
+        const pairs = await Promise.all(
+          uniqueAddresses.map(async (address) => {
+            try {
+              const ensName = await provider.lookupAddress(address);
+              return [address, ensName || null];
+            } catch (error) {
+              return [address, null];
+            }
+          })
+        );
+
+        setEnsMap(Object.fromEntries(pairs));
+      } catch (error) {
+        setEnsMap({});
+      }
+    };
+
+    loadEnsNames();
+  }, [requests]);
 
   const copyToClipboard = async (text, type) => {
     try {
@@ -134,6 +169,11 @@ export default function Public() {
       console.error("Failed to copy:", err);
       alert("Failed to copy to clipboard");
     }
+  };
+
+  const truncateHash = (hash) => {
+    if (!hash) return "";
+    return `${hash.slice(0, 6)}...${hash.slice(-4)}`;
   };
 
   const filterRequests = () => {
@@ -267,7 +307,9 @@ export default function Public() {
                         <td className="cell-id">{Number(request.id)}</td>
                         <td className="cell-address" title={request.citizen}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <span>{truncateAddress(request.citizen)}</span>
+                            <span>
+                              {displayEns(ensMap[(request.citizen || "").toLowerCase()])}
+                            </span>
                             <button
                               onClick={() => copyToClipboard(request.citizen, "Address")}
                               style={{
@@ -290,7 +332,7 @@ export default function Public() {
                         <td className="cell-hash" title={request.transactionHash || "N/A"}>
                           {request.transactionHash ? (
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                              <span>{truncateAddress(request.transactionHash)}</span>
+                              <span>{truncateHash(request.transactionHash)}</span>
                               <button
                                 onClick={() => copyToClipboard(request.transactionHash, "Transaction Hash")}
                                 style={{
